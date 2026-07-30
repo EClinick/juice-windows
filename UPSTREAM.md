@@ -12,6 +12,12 @@ The two applications do not share implementation code or release infrastructure.
 
 The initial repository history was extracted from the `windows/` subtree of that pull request so Andrew Clinick's commits and authorship remain intact.
 
+## Shared contract
+
+The canonical, language-neutral JSON export contract is proposed in [EClinick/juice#19](https://github.com/EClinick/juice/pull/19).
+This repository keeps a tested copy under `contracts/` so Windows output and examples can be validated without sharing implementation code.
+Contract changes must start in the canonical Juice repository and land here through a linked Windows pull request.
+
 ## Ownership
 
 - Product behavior and macOS releases: [@EClinick](https://github.com/EClinick)

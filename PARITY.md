@@ -7,7 +7,7 @@ Status meanings:
 - **Implemented**: present in the imported Windows source and covered by tests or recorded runtime evidence.
 - **Different by design**: Windows answers the same product question through different platform data or UI.
 - **Not applicable**: the behavior exists only because of a macOS framework or release mechanism.
-- **Pending verification**: implemented, but the new repository has not yet produced independent CI or release evidence.
+- **Pending verification**: implemented, but current install, runtime, or hardware evidence is incomplete.
 
 | Product behavior | Windows status | Notes |
 |---|---|---|
@@ -23,14 +23,14 @@ Status meanings:
 | Mac mini server mode | Not applicable | Windows hardware rails supply the corresponding desktop measurement path. |
 | Privileged powerlog helper | Not applicable | Windows sources used here do not require an elevated helper. |
 | Sparkle updates and Homebrew cask | Not applicable | Windows packaging and Microsoft Store distribution are independent. |
-| Versioned JSON export | Implemented on Windows | Schema `0.1`; macOS implementation remains an upstream follow-up. |
+| Versioned JSON export | Implemented on Windows | Schema `0.1`; canonical contract proposed in [EClinick/juice#19](https://github.com/EClinick/juice/pull/19), while the macOS implementation remains a follow-up. |
 | Private by default | Pending verification | Region lookup is local and the application has no telemetry path in the imported source. |
 
 ## Current release gate
 
-The imported source is not ready for a new public release until all of the following have current evidence:
+Core tests and x64 and ARM64 application-slice builds are green in the independent repository.
+The imported source is not ready for a new public release until all of the following remaining checks have current evidence:
 
-- Windows CI passes core tests and both architecture builds.
 - x64 and ARM64 package builds succeed.
 - Install and upgrade preserve local history.
 - The tray application launches and remains responsive.
