@@ -17,4 +17,11 @@
     <ProjectReference Include="..\..\src\Juice.Core\Juice.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None
+      Include="..\..\contracts\v0.1\**\*"
+      Link="contracts\v0.1\%(RecursiveDir)%(Filename)%(Extension)"
+      CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

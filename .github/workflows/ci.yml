@@ -1,0 +1,41 @@
+name: Windows CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-tests:
+    name: Core tests
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Test core behavior
+        run: dotnet test tests/Juice.Core.Tests/Juice.Core.Tests.csproj --configuration Release
+
+  app-build:
+    name: App build (${{ matrix.platform }})
+    runs-on: windows-2025
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [x64, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Build native application slice
+        run: dotnet build src/Juice.App/Juice.App.csproj --configuration Release -p:Platform=${{ matrix.platform }} -p:GenerateAppxPackageOnBuild=false

@@ -1,7 +1,12 @@
 # Juice for Windows
 
-A Windows port of Juice in C# and WinUI 3.
+A Windows edition of [Juice for macOS](https://github.com/EClinick/juice), written in C# and WinUI 3.
 It answers the same question as the macOS original, using Windows' own power telemetry: what is eating your battery, how much energy each app actually used, and now what that energy costs you.
+
+> [!IMPORTANT]
+> This repository is maintained and released independently from Juice for macOS.
+> It follows the shared behavior contract where Windows exposes equivalent data, but it has its own implementation, CI, version, signing, packaging, and support lifecycle.
+> See [UPSTREAM.md](UPSTREAM.md) and [PARITY.md](PARITY.md).
 
 ## What is different from the macOS version
 
@@ -29,12 +34,11 @@ Because the accumulator and the integrated power counter are independent derivat
 ## Layout
 
 ```
-windows/
-  src/Juice.Core              Pure logic. No Windows dependencies, fully unit tested.
-  src/Juice.Platform.Windows  Energy Meter rails, ACPI battery, PDH, NT process table.
-  src/Juice.Cli               juice.exe, the command line and TUI front end.
-  src/Juice.App               WinUI 3 tray application.
-  tests/Juice.Core.Tests      xUnit suite over Juice.Core.
+src/Juice.Core              Pure logic. No Windows dependencies, fully unit tested.
+src/Juice.Platform.Windows  Energy Meter rails, ACPI battery, PDH, NT process table.
+src/Juice.Cli               juice.exe, the command line and TUI front end.
+src/Juice.App               WinUI 3 tray application.
+tests/Juice.Core.Tests      xUnit suite over Juice.Core.
 ```
 
 As in the macOS tree, all energy math, rollups, insights and cost logic live in the core library where tests can reach it.
@@ -43,13 +47,13 @@ The front ends only render what the core computes.
 ## Building and testing
 
 ```powershell
-dotnet build windows/Juice.slnx
+dotnet build Juice.slnx
 
 # Tests
-dotnet test windows/tests/Juice.Core.Tests/Juice.Core.Tests.csproj
+dotnet test tests/Juice.Core.Tests/Juice.Core.Tests.csproj
 
 # A single test
-dotnet test windows/tests/Juice.Core.Tests/Juice.Core.Tests.csproj --filter "FullyQualifiedName~AppsPlusPlatform"
+dotnet test tests/Juice.Core.Tests/Juice.Core.Tests.csproj --filter "FullyQualifiedName~AppsPlusPlatform"
 ```
 
 Build the architecture you are running on, and verify there.
@@ -137,7 +141,7 @@ Branch on `ok`, then on `error.code`, which is stable within a schema version.
 The `message` is not stable and should not be parsed.
 Exit codes are `0` for success, `1` for a command that ran but produced no result, and `2` for a usage error.
 
-The schema is defined in `src/Juice.Core/Contracts/JuiceSchema.cs` and discussed in EClinick/juice#16.
+The schema is defined publicly in [`contracts/v0.1`](contracts/v0.1), implemented in `src/Juice.Core/Contracts/JuiceSchema.cs`, and discussed in [EClinick/juice#16](https://github.com/EClinick/juice/issues/16).
 
 ## Cost
 
@@ -152,10 +156,10 @@ Packaging goes through the `winapp` CLI.
 
 ```powershell
 # Self-contained x64 + ARM64 bundle, signed with a generated development certificate
-windows\build\pack.ps1
+build\pack.ps1
 
 # Production
-windows\build\pack.ps1 -CertPath .\prod.pfx -Timestamp http://timestamp.digicert.com
+build\pack.ps1 -CertPath .\prod.pfx -Timestamp http://timestamp.digicert.com
 ```
 
 `winapp package` produces one `.msix` per architecture, so the script publishes and packages x64 and ARM64 separately and combines them with `winapp tool makeappx bundle`.
@@ -170,29 +174,29 @@ It precompiles IL to native code, which costs 12.6 MB on ARM64 and 14.5 MB on x6
 The per-architecture figure is the one that matters, because an MSIX bundle installs only the package matching the machine, whether it came from the Store, a website or a USB key.
 
 That setting was briefly disabled on the strength of a measurement showing it made startup slower.
-The measurement was invalid, and `windows/docs/porting-notes.md` describes why in some detail, because the way it failed is more instructive than the result.
+The measurement was invalid, and `docs/porting-notes.md` describes why in some detail, because the way it failed is more instructive than the result.
 
 The package declares an `AppExecutionAlias`, so installing it puts `juice` on the PATH for any terminal.
 One bundle therefore serves both the tray application and the command line.
 
-Versions are `major.minor.build.0`, defined once in `windows/Directory.Build.props` and stamped into the manifest at pack time.
+Versions are `major.minor.build.0`, defined once in `Directory.Build.props` and stamped into the manifest at pack time.
 `pack.ps1` bumps the build segment on every run, because the Store rejects a submission whose version is not strictly greater than the last one accepted, and editing it by hand is the step that gets forgotten on the second submission.
 Pass `-NoBump` to repackage the same version while iterating locally.
 The revision field stays 0 because the Microsoft Store reserves it and rewrites it when it repackages a submission.
 
 ## Submitting to the Store
 
-The portal accepts the bundle directly, and for occasional releases that is the shortest path: upload `windows/artifacts/Juice_<version>.msixbundle` under Packages in Partner Center.
+The portal accepts the bundle directly, and for occasional releases that is the shortest path: upload `artifacts/Juice_<version>.msixbundle` under Packages in Partner Center.
 
 Submission can also be scripted, which is worth setting up once releases become frequent.
 `winapp store` wraps the Microsoft Store Developer CLI, downloading it on first use.
 
 ```powershell
 # Validate credentials and the bundle without submitting anything
-windows\build\submit.ps1 -WhatIf
+build\submit.ps1 -WhatIf
 
-# Submit the newest bundle in windows/artifacts
-windows\build\submit.ps1
+# Submit the newest bundle in artifacts
+build\submit.ps1
 ```
 
 Credentials are read from environment variables and are never stored in this repository.

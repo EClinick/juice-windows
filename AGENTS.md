@@ -1,7 +1,7 @@
-# Windows port instructions
+# Juice for Windows repository instructions
 
-Rules for anyone, human or agent, working in `windows/`.
-The root `AGENT.md` covers the macOS release process and still applies to that tree.
+Rules for anyone, human or agent, working in this repository.
+The macOS repository has a separate release process and must not be changed or published as part of Windows work.
 
 ## Build the architecture you are running on
 
@@ -10,7 +10,7 @@ Development machines for this port are frequently ARM64, because Snapdragon X Co
 While iterating, build only the host architecture:
 
 ```powershell
-dotnet build windows\src\Juice.App\Juice.App.csproj -p:Platform=ARM64
+dotnet build src\Juice.App\Juice.App.csproj -p:Platform=ARM64
 ```
 
 Cross-compiled slices ship, but they are a packaging step.
@@ -82,5 +82,20 @@ Use a plain `-`.
 No emojis in product UI or code.
 App rows use real extracted icons and system indicators use Segoe Fluent glyphs.
 
-Versions are `major.minor.build.0`, defined once in `windows/Directory.Build.props`.
+Versions are `major.minor.build.0`, defined once in `Directory.Build.props`.
 The revision stays 0 because the Microsoft Store reserves it.
+
+## Upstream parity
+
+Juice for macOS is the behavioral source of truth, not a source tree to merge or cherry-pick.
+For every upstream release, classify changes as shared behavior, Windows-equivalent behavior, macOS-only, or deferred.
+Record that classification in `PARITY.md`.
+
+Every Windows parity pull request must link the upstream pull request, commit, or release tag it implements.
+Changes to energy semantics or the JSON export contract must update the language-neutral fixtures under `contracts/`.
+
+## Publishing
+
+Do not submit to the Microsoft Store or publish a GitHub release merely because builds and tests pass.
+Publishing requires explicit authorization for the exact version and artifacts.
+Run `build\submit.ps1 -WhatIf` before any authorized Store submission.

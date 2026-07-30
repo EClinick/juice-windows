@@ -29,7 +29,7 @@
     file.
 
 .PARAMETER Bundle
-    Path to the .msixbundle. Defaults to the newest one in windows/artifacts.
+    Path to the .msixbundle. Defaults to the newest one in artifacts.
 
 .PARAMETER WhatIf
     Validate credentials and the bundle without submitting anything.

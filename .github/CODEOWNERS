@@ -1,0 +1,6 @@
+* @EClinick @aclinick
+
+/src/Juice.Platform.Windows/ @aclinick
+/src/Juice.App/ @aclinick
+/build/ @EClinick @aclinick
+/contracts/ @EClinick @aclinick

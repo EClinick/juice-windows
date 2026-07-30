@@ -1,0 +1,17 @@
+[Bb]in/
+[Oo]bj/
+*.user
+.vs/
+artifacts/
+**/AppPackages/
+**/BundleArtifacts/
+*.msix
+*.msixbundle
+*.appinstaller
+*.pfx
+.DS_Store
+
+# Local environment and debug files
+.env*
+!.env.example
+*.log
