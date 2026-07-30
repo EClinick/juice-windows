@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/EClinick/juice/master/contracts/v0.1/juice-export.schema.json",
+  "$id": "https://raw.githubusercontent.com/EClinick/juice-windows/main/contracts/v0.1/juice-export.schema.json",
   "title": "Juice JSON export contract 0.1",
   "oneOf": [
     { "$ref": "#/$defs/errorDocument" },

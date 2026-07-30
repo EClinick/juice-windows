@@ -23,7 +23,7 @@ Status meanings:
 | Mac mini server mode | Not applicable | Windows hardware rails supply the corresponding desktop measurement path. |
 | Privileged powerlog helper | Not applicable | Windows sources used here do not require an elevated helper. |
 | Sparkle updates and Homebrew cask | Not applicable | Windows packaging and Microsoft Store distribution are independent. |
-| Versioned JSON export | Implemented on Windows | Schema `0.1`; canonical contract proposed in [EClinick/juice#19](https://github.com/EClinick/juice/pull/19), while the macOS implementation remains a follow-up. |
+| Versioned JSON export | Implemented on Windows | Schema `0.1` is Windows-owned; macOS does not currently expose a corresponding JSON CLI. |
 | Private by default | Pending verification | Region lookup is local and the application has no telemetry path in the imported source. |
 
 ## Current release gate
