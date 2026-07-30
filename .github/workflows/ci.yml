@@ -18,8 +18,8 @@ jobs:
     name: Core tests
     runs-on: windows-2025
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: Test core behavior
@@ -33,8 +33,8 @@ jobs:
       matrix:
         platform: [x64, ARM64]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: Build native application slice
