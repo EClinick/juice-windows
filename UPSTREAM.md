@@ -8,7 +8,7 @@ The two applications do not share implementation code or release infrastructure.
 - Upstream macOS release: `v0.2.9`
 - Upstream macOS commit: `cf95dbaacd3c263e1ac1e7adfabd6473651428b4`
 - Windows source pull request: [EClinick/juice#17](https://github.com/EClinick/juice/pull/17)
-- Imported Windows source commit: `aa2c1ab1011ebf9e3851df5c4dee8d4e1148040d`
+- Imported Windows source commit: `55eeffae2ecb19ed755842f6a6f623e5f39c3113`
 
 The initial repository history was extracted from the `windows/` subtree of that pull request so Andrew Clinick's commits and authorship remain intact.
 
